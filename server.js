@@ -53,6 +53,9 @@ app.get("/help-requests/:id", middleware.checkToken, help_request.getHelpRequest
 app.put("/help-requests/:id", middleware.checkToken, help_request.putHelpRequest);
 app.get("/help-requests/:id/responders/count", middleware.checkToken, help_request.getHelpRequestResponderCount)
 
+// NEW
+app.get("/users/online", middleware.checkToken,user.OnlineStatus);
+
 // Alarm metrics
 app.post("/metrics/alarm", middleware.checkToken, alarmMetrics.alarmStart);
 app.put("/metrics/alarm/:alarmID", middleware.checkToken, alarmMetrics.alarmUpdate);

@@ -6,6 +6,18 @@ var OnlineService = require("../services/online.service");
 var UserService = require("../services/user.service");
 var AvailbilityService = require("../services/availability.service");
 
+//creates an endpoint to check for online avaliabilty
+async function OnlineStatus(req, res) {
+  try {
+    user = await UserService.findUserById(req.params.id);
+  } catch (err) {
+    handle.notFound(res, err.message);
+  }
+  //finds out if user is online or not
+  var onlineStatus = await OnlineService.checkOnlineStatus(user._id);
+  res.send;
+}
+
 async function userInfo(req, res) {
   var user = null;
 
@@ -335,6 +347,7 @@ async function respondingTo(req, res) {
 }
 
 module.exports = {
+  OnlineStatus,
   userInfo,
   getResponders,
   addResponders,

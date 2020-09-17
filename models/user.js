@@ -15,6 +15,7 @@ const model = mongoose.model("users", new Schema({
   },
   responders: [{ _id: false, id: String }],
   pushToken: String,
+  lastSeen: Date,
   naloxoneAvailability: Boolean
 }, { versionKey: false }));
 

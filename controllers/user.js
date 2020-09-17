@@ -73,6 +73,8 @@ async function getResponderCount(req, res) {
     _id: new ObjectId(req.params.id)
   }).lean();
 
+  await OnlineService.setLastSeen(user._id, new Date());
+
   const userLat = user.location ? user.location.coords.lat : null;
   const userLng = user.location ? user.location.coords.lng : null;
 
@@ -346,6 +348,18 @@ async function respondingTo(req, res) {
   }
 }
 
+async function setLastSeen(req, res) {
+  try {
+    await OnlineService.setLastSeen(req.params.id, new Date());
+  } catch (err) {
+    handle.notFound(res, err.message);
+  }
+  console.log(`Updated last seen for ${req.params.id}`);
+  res.status(200).json({
+    message: "Online status has been updated"
+  });
+}
+
 module.exports = {
   OnlineStatus,
   userInfo,
@@ -358,5 +372,6 @@ module.exports = {
   getLocation,
   getResponderCount,
   addPushToken,
-  respondingTo
+  respondingTo,
+  setLastSeen
 };

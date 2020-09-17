@@ -1,9 +1,11 @@
 var redis = require("./redis");
+const onlineService = require("./online.service");
 const availableUsers = "available_users";
 var UserModel = require("../models/user").model;
 var ObjectId = require("mongodb").ObjectId;
 
 const DISTANCE_THRESHOLD = 0.5;
+const TIME_THRESHOLD = 300000; //MS
 
 async function setAvailable(userId) {
   try {
@@ -47,7 +49,10 @@ async function checkAvailabilityStatusWithDistance(userId, userLat, userLng) {
 
   try {
     const res = await redis.sismemberAsync(availableUsers, userId);
-    return (res && (distance < DISTANCE_THRESHOLD)) ? true : false;
+    const recentlyOnline = parseInt(await onlineService.getLastSeen(userId));
+    const now = (new Date()).valueOf();
+    const recentlySeen = (now - TIME_THRESHOLD > recentlyOnline);
+    return (res && (distance < DISTANCE_THRESHOLD) && recentlySeen) ? true : false;
   } catch (err) {
     console.log("redis checkAvailabilityStatus error: ", err.message);
     return false;

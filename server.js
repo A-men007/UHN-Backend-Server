@@ -38,6 +38,7 @@ app.put("/users/:id/location", middleware.checkToken, user.updateLocation);
 app.get("/users/:id/location", middleware.checkToken, user.getLocation);
 
 app.post("/users/:id/status", middleware.checkToken, user.toggleOnlineAndNaloxoneAvailabilityStatus);
+app.get("/users/:id/online", user.setLastSeen);
 
 app.get("/users/search", middleware.checkToken, user.searchUsers);
 

@@ -47,6 +47,8 @@ app.get("/users/:id/responders", middleware.checkToken, user.getResponders);
 app.get("/users/:id/responders/count", middleware.checkToken, user.getResponderCount);
 app.get("/users/:id/responding-to", middleware.checkToken, user.respondingTo);
 app.delete("/users/:id/responders", middleware.checkToken, user.deleteResponders);
+app.get("/users/:id/responders/request", middleware.checkToken, user.requestResponders);
+
 
 // Help requests
 app.post("/help-requests/", middleware.checkToken, help_request.addHelpRequest);

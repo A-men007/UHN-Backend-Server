@@ -5,6 +5,9 @@ var UserModel = require("../models/user").model;
 var OnlineService = require("../services/online.service");
 var UserService = require("../services/user.service");
 var AvailbilityService = require("../services/availability.service");
+var NotificationService = require("../services/notification.service");
+
+const MIN_RESPONDERS = 1;
 
 //creates an endpoint to check for online avaliabilty
 async function OnlineStatus(req, res) {
@@ -360,6 +363,64 @@ async function setLastSeen(req, res) {
   });
 }
 
+async function requestResponders(req, res) {
+  console.log(`Requesting responders for for ${req.params.id}`);
+  let user = null;
+  try {
+    user = await UserService.findUserById(req.params.id);
+    console.log(`GOT USER: ${user}`)
+    await NotificationService.requestResponders(user);
+  } catch (err) {
+    handle.notFound(res, err.message);
+  }
+
+  user = await UserModel.findOne({
+    _id: new ObjectId(req.params.id)
+  }).lean();
+
+  const userLat = user.location ? user.location.coords.lat : null;
+  const userLng = user.location ? user.location.coords.lng : null;
+
+  let waitForResponses;
+  let stopWaiting;
+  
+  waitForResponses = setInterval(async () => {
+    console.log("Waiting for responses")
+    let responders = user.responders;
+    let count = 0;
+    for (let r of responders) {
+      var responder = await UserModel.findOne({
+        _id: new ObjectId(r.id)
+      }).lean();
+
+      let availbilityStatus = false;
+
+      if (responder.location && user.location)
+        availbilityStatus = await AvailbilityService.checkAvailabilityStatusWithDistance(r.id, userLat, userLng);
+
+    
+      if (availbilityStatus == true){
+        count++;
+        console.log("FOUND SOMEONE POGU");
+      } 
+    }
+    if(count >= MIN_RESPONDERS) {
+      res.status(200).json({ count: count });
+      clearInterval(waitForResponses);
+      clearTimeout(stopWaiting);
+      return;
+    }
+  }, 1000);
+  
+
+  stopWaiting = setTimeout(() => {
+    console.log("Couldn't find anyone")
+    clearInterval(waitForResponses);
+    res.status(200).json({ count: 0 });
+    return;
+  }, 60000)
+}
+
 module.exports = {
   OnlineStatus,
   userInfo,
@@ -373,5 +434,6 @@ module.exports = {
   getResponderCount,
   addPushToken,
   respondingTo,
-  setLastSeen
+  setLastSeen,
+  requestResponders
 };

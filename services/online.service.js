@@ -28,9 +28,9 @@ async function checkOnlineStatus(userId) {
   }
 }
 
-async function setLastSeen(userId, lastSeen) {
+async function setLastSeen(userId, timeLastSeen) {
   try {
-    await redis.hsetAsync(lastSeen, userId.toString(), lastSeen.valueOf());
+    await redis.hsetAsync(lastSeen, userId.toString(), timeLastSeen.valueOf());
   } catch(err) {
     console.error("redis setOffline error: ", err.message);
   }

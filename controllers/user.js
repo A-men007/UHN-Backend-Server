@@ -349,12 +349,12 @@ async function respondingTo(req, res) {
 }
 
 async function setLastSeen(req, res) {
+  console.log(`Updated last seen for ${req.params.id}`);
   try {
     await OnlineService.setLastSeen(req.params.id, new Date());
   } catch (err) {
     handle.notFound(res, err.message);
   }
-  console.log(`Updated last seen for ${req.params.id}`);
   res.status(200).json({
     message: "Online status has been updated"
   });

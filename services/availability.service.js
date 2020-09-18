@@ -51,7 +51,7 @@ async function checkAvailabilityStatusWithDistance(userId, userLat, userLng) {
     const res = await redis.sismemberAsync(availableUsers, userId);
     const recentlyOnline = parseInt(await onlineService.getLastSeen(userId));
     const now = (new Date()).valueOf();
-    const recentlySeen = (now - TIME_THRESHOLD > recentlyOnline);
+    const recentlySeen = (recentlyOnline.valueOf() + TIME_THRESHOLD > now);
     return (res && (distance < DISTANCE_THRESHOLD) && recentlySeen) ? true : false;
   } catch (err) {
     console.log("redis checkAvailabilityStatus error: ", err.message);

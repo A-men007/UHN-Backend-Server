@@ -267,6 +267,12 @@ async function toggleOnlineAndNaloxoneAvailabilityStatus(req, res) {
   }
 }
 
+async function getNaloxoneAvailabilityStatus(req, res) {
+  res.status(200).json({
+    naloxoneAvailability: await AvailbilityService.checkAvailabilityStatus(req.params.id)
+  });
+}
+
 async function updateLocation(req, res) {
   var query = { _id: new ObjectId(req.params.id) };
   try {
@@ -306,6 +312,7 @@ async function getLocation(req, res) {
 }
 
 async function addPushToken(req, res) {
+  console.log(req.body.pushToken)
   try {
     var result = await UserModel.findOneAndUpdate(
       {
@@ -429,6 +436,7 @@ module.exports = {
   deleteResponders,
   searchUsers,
   toggleOnlineAndNaloxoneAvailabilityStatus,
+  getNaloxoneAvailabilityStatus,
   updateLocation,
   getLocation,
   getResponderCount,

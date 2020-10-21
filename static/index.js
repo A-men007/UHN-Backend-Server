@@ -10,7 +10,7 @@ const getFromUrl = async (url) => {
 window.addEventListener("load", async () => {
   const table = document.querySelector("#metrics-table");
   //let url = "http://localhost:3000/metrics/stats";
-  let url = "http://ec2-3-96-125-87.ca-central-1.compute.amazonaws.com";
+  let url = "http://ec2-3-96-125-87.ca-central-1.compute.amazonaws.com/metrics/stats";
   let data = await getFromUrl(url);
 
   data.forEach(user => {

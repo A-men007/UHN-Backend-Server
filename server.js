@@ -1,4 +1,5 @@
 require("dotenv").config({ path: __dirname + "/.env" });
+const path = require('path');
 const InitializationService = require("./services/initialization.service");
 InitializationService.initialize();
 const { validateSignup, validateLogin, validateUseRefreshToken, validateDeleteRefreshToken } = require("./utils/error_handling");
@@ -24,8 +25,9 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-app.get("/", (req, res) => res.send("Server is up"))
+app.get("/test", (req, res) => {res.send("Ok")});
 
+app.use(express.static('static'));
 app.post("/signup", validateSignup(), auth.signup);
 app.post("/login", validateLogin(), auth.login);
 app.post("/refresh-token", validateUseRefreshToken(), auth.useRefreshToken);
@@ -72,6 +74,10 @@ app.post("/metrics/arrival", middleware.checkToken, arrivalMetrics.responderArri
 
 // Treatement metrics
 app.post("/metrics/treatment", middleware.checkToken, treatementMetrics.recordTreatment);
+
+app.get("/metrics/stats", user.getAllUserData);
+app.get("/metrics/users", (req, res) => {res.send("Ok")});
+
 
 // FOR TESTING ONLY
 app.get("/test-notif", notification.testSendNotification);

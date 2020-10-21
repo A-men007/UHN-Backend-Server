@@ -428,6 +428,26 @@ async function requestResponders(req, res) {
   }, 60000)
 }
 
+
+async function getAllUserData(req, res) {
+  let result;
+  try {
+    result = await UserModel.find(null, "username _id").lean();
+  } catch {
+    handle.internalServerError(res, "Failed to query user database");
+  }
+  
+  for (let i=0; i<result.length; i++) {
+    let onlineStatus = await OnlineService.checkOnlineStatus(result[i]._id);
+    let lastSeen = await OnlineService.getLastSeen(result[i]._id);
+    result[i].naloxoneAvailability = onlineStatus;
+    result[i].lastSeen = lastSeen;
+  }
+  
+  console.log(result)
+  res.status(200).send(result);
+}
+
 module.exports = {
   OnlineStatus,
   userInfo,
@@ -443,5 +463,6 @@ module.exports = {
   addPushToken,
   respondingTo,
   setLastSeen,
-  requestResponders
+  requestResponders,
+  getAllUserData
 };

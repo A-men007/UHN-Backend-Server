@@ -381,51 +381,53 @@ async function requestResponders(req, res) {
     handle.notFound(res, err.message);
   }
 
-  user = await UserModel.findOne({
-    _id: new ObjectId(req.params.id)
-  }).lean();
+  res.status(200).json({ count: 0 });
 
-  const userLat = user.location ? user.location.coords.lat : null;
-  const userLng = user.location ? user.location.coords.lng : null;
+  // user = await UserModel.findOne({
+  //   _id: new ObjectId(req.params.id)
+  // }).lean();
 
-  let waitForResponses;
-  let stopWaiting;
+  // const userLat = user.location ? user.location.coords.lat : null;
+  // const userLng = user.location ? user.location.coords.lng : null;
+
+  // let waitForResponses;
+  // let stopWaiting;
   
-  waitForResponses = setInterval(async () => {
-    console.log("Waiting for responses")
-    let responders = user.responders;
-    let count = 0;
-    for (let r of responders) {
-      var responder = await UserModel.findOne({
-        _id: new ObjectId(r.id)
-      }).lean();
+  // waitForResponses = setInterval(async () => {
+  //   console.log("Waiting for responses")
+  //   let responders = user.responders;
+  //   let count = 0;
+  //   for (let r of responders) {
+  //     var responder = await UserModel.findOne({
+  //       _id: new ObjectId(r.id)
+  //     }).lean();
 
-      let availbilityStatus = false;
+  //     let availbilityStatus = false;
 
-      if (responder.location && user.location)
-        availbilityStatus = await AvailbilityService.checkAvailabilityStatusWithDistance(r.id, userLat, userLng);
+  //     if (responder.location && user.location)
+  //       availbilityStatus = await AvailbilityService.checkAvailabilityStatusWithDistance(r.id, userLat, userLng);
 
     
-      if (availbilityStatus == true){
-        count++;
-        console.log("FOUND SOMEONE POGU");
-      } 
-    }
-    if(count >= MIN_RESPONDERS) {
-      res.status(200).json({ count: count });
-      clearInterval(waitForResponses);
-      clearTimeout(stopWaiting);
-      return;
-    }
-  }, 1000);
+  //     if (availbilityStatus == true){
+  //       count++;
+  //       console.log("FOUND SOMEONE POGU");
+  //     } 
+  //   }
+  //   if(count >= MIN_RESPONDERS) {
+  //     res.status(200).json({ count: count });
+  //     clearInterval(waitForResponses);
+  //     clearTimeout(stopWaiting);
+  //     return;
+  //   }
+  // }, 1000);
   
 
-  stopWaiting = setTimeout(() => {
-    console.log("Couldn't find anyone")
-    clearInterval(waitForResponses);
-    res.status(200).json({ count: 0 });
-    return;
-  }, 60000)
+  // stopWaiting = setTimeout(() => {
+  //   console.log("Couldn't find anyone")
+  //   clearInterval(waitForResponses);
+  //   res.status(200).json({ count: 0 });
+  //   return;
+  // }, 60000)
 }
 
 

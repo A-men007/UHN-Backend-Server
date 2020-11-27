@@ -132,7 +132,7 @@ async function useRefreshToken(req, res) {
     let refreshToken = req.body.refreshToken;
     if (await RefreshTokenService.checkRefreshToken(userId, refreshToken)) {
       let token = jwt.sign({ id: userId }, process.env.SECRET, {
-        expiresIn: TOKEN_DURATION
+        // expiresIn: TOKEN_DURATION
       });
 
       // Consider generating new refresh token and returning it so that refresh token will also expire

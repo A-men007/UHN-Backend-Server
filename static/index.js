@@ -165,8 +165,8 @@ const openTab = async (evt, tableName) => {
 }
 
 
-//const url = "http://ec2-3-96-125-87.ca-central-1.compute.amazonaws.com/metrics/";
-const url = "http://localhost:3000/metrics/";
+const url = "http://ec2-3-96-125-87.ca-central-1.compute.amazonaws.com/metrics/";
+// const url = "http://localhost:3000/metrics/";
 
 
 window.addEventListener("load", async () => {

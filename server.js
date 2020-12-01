@@ -6,6 +6,7 @@ const { validateSignup, validateLogin, validateUseRefreshToken, validateDeleteRe
 const user = require("./controllers/user");
 const auth = require("./controllers/auth");
 const alarmMetrics = require("./controllers/metrics/alarm");
+const timerMetrics = require("./controllers/metrics/timer");
 const responseMetrics = require("./controllers/metrics/response");
 const arrivalMetrics = require("./controllers/metrics/arrival");
 const treatementMetrics = require("./controllers/metrics/treatment");
@@ -62,6 +63,10 @@ app.get("/help-requests/:id/responders/count", middleware.checkToken, help_reque
 // NEW
 app.get("/users/online", middleware.checkToken,user.OnlineStatus);
 
+// Timer metrics
+app.post("/metrics/timer", middleware.checkToken, timerMetrics.timerStart);
+app.put("/metrics/timer/:timerID", middleware.checkToken, timerMetrics.timerUpdate);
+
 // Alarm metrics
 app.post("/metrics/alarm", middleware.checkToken, alarmMetrics.alarmStart);
 app.put("/metrics/alarm/:alarmID", middleware.checkToken, alarmMetrics.alarmUpdate);
@@ -75,8 +80,11 @@ app.post("/metrics/arrival", middleware.checkToken, arrivalMetrics.responderArri
 // Treatement metrics
 app.post("/metrics/treatment", middleware.checkToken, treatementMetrics.recordTreatment);
 
-app.get("/metrics/stats", user.getAllUserData);
-app.get("/metrics/users", (req, res) => {res.send("Ok")});
+app.get("/metrics/users", user.getAllUserData);
+app.get("/metrics/alarms", alarmMetrics.getAllAlarmData);
+app.get("/metrics/timers", timerMetrics.getAllTimerData);
+app.get("/metrics/arrivals", arrivalMetrics.getAllArrivalData);
+app.get("/metrics/responses", responseMetrics.getAllResponseData);
 
 
 // FOR TESTING ONLY

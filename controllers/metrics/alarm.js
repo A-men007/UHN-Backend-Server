@@ -63,7 +63,13 @@ async function alarmUpdate(req, res) {
   
 }
 
+async function getAllAlarmData(req, res) {
+  let alarms = await alarmService.getAllAlarmLogs();
+  res.status(200).json(alarms);
+}
+
 module.exports = {
   alarmStart,
-  alarmUpdate
+  alarmUpdate,
+  getAllAlarmData
 }

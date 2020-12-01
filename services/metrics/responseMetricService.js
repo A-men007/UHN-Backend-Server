@@ -19,10 +19,17 @@ async function createResponseLog(alarmID, userID, response, time) {
 
   } catch (err) {
     throw new Error(err.message);
-  }
-  
+  } 
+}
+
+
+
+async function getAllResponseLogs() {
+  let responses = await metricDB("responselog").returning("*");
+  return responses;
 }
 
 module.exports = {
-  createResponseLog
+  createResponseLog,
+  getAllResponseLogs
 }

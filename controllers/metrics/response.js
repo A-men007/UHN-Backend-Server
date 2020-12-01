@@ -25,10 +25,16 @@ async function recordResponse(req, res) {
   } catch (err) {
     console.log(err);
     handle.internalServerError(res, "Cannot create response log");
-  }
-  
+  } 
 }
 
+async function getAllResponseData(req, res) {
+  let responses = await responseService.getAllResponseLogs();
+  res.status(200).json(responses);
+}
+
+
 module.exports = {
-  recordResponse
+  recordResponse,
+  getAllResponseData
 }

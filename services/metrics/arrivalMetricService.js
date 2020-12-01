@@ -20,6 +20,13 @@ async function createArrivalLog(responseID, arrivalTime) {
   }
 }
 
+
+async function getAllArrivalLogs() {
+  let arrivals = await metricDB("arrivallog").returning("*");
+  return arrivals;
+}
+
 module.exports = {
-  createArrivalLog
+  createArrivalLog,
+  getAllArrivalLogs
 }

@@ -22,6 +22,14 @@ async function responderArrival(req, res) {
   }
 }
 
+async function getAllArrivalData(req, res) {
+  let arrivals = await arrivalService.getAllArrivalData();
+  res.status(200).json(arrivals);
+}
+
+
+
 module.exports = {
-  responderArrival
+  responderArrival,
+  getAllArrivalData
 }

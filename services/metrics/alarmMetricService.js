@@ -35,6 +35,11 @@ async function getAlarmLogById(logID) {
   }
 }
 
+async function getAllAlarmLogs() {
+  let alarms = await metricDB("alarmlog").returning("*");
+  return alarms;
+}
+
 async function getAndUpdateAlarmEndTime(logID, newTime) {
   let newAlarmEndTime = null;
   let alarm = null;
@@ -105,5 +110,6 @@ module.exports = {
   getAlarmLogById,
   getAndUpdateAlarmEndTime,
   getAndUpdateAlarmSent,
-  getLatestAlarmLogIdForUser
+  getLatestAlarmLogIdForUser,
+  getAllAlarmLogs
 }

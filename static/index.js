@@ -17,7 +17,7 @@ const createTable = {
       <th>User Name</th>
       <th>User ID</th>
       <th>Phone #</th>
-      <th>Loc</th>
+      <th>Note</th>
       <th>Last Seen</th>
       <th>Naloxone?</th>`;
     table.appendChild(headerRow);
@@ -30,7 +30,7 @@ const createTable = {
       <td>${user.username}</td>
       <td>${user._id}</td>
       <td>${user.phone}</td>
-      <td>${user.location.note}</td>
+      <td>${user.note}</td>
       <td>${user.lastSeen == null ? "" : lastSeen.toLocaleDateString() + " " + lastSeen.toLocaleTimeString()}</td>
       <td>${user.naloxoneAvailability}</td>`
       table.appendChild(userRow)

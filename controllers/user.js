@@ -444,6 +444,7 @@ async function getAllUserData(req, res) {
     let lastSeen = await OnlineService.getLastSeen(result[i]._id);
     result[i].naloxoneAvailability = onlineStatus;
     result[i].lastSeen = lastSeen;
+    result[i].note = result[i].location.note;
   }
   
   console.log(result)

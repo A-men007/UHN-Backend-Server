@@ -434,7 +434,7 @@ async function requestResponders(req, res) {
 async function getAllUserData(req, res) {
   let result;
   try {
-    result = await UserModel.find(null, "username phone location.note _id").lean();
+    result = await UserModel.find(null, "username phone location _id").lean();
   } catch {
     handle.internalServerError(res, "Failed to query user database");
   }

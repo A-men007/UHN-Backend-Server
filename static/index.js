@@ -17,12 +17,13 @@ const createTable = {
       <th>User Name</th>
       <th>User ID</th>
       <th>Phone #</th>
-      <th>Last Seen</th>
       <th>Loc</th>
+      <th>Last Seen</th>
       <th>Naloxone?</th>`;
     table.appendChild(headerRow);
     
     data.forEach(user => {
+      console.log(user)
       let lastSeen = new Date(parseInt(user.lastSeen));
       let userRow = document.createElement('tr')
       userRow.innerHTML = `

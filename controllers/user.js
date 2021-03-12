@@ -434,10 +434,14 @@ async function requestResponders(req, res) {
 async function getAllUserData(req, res) {
   let result;
   try {
-    result = await UserModel.find(null, "username _id").lean();
+    result = await UserModel.find(null, "username _id");
   } catch {
     handle.internalServerError(res, "Failed to query user database");
   }
+
+  console.log(result);
+  result = result.lean();
+  console.log(result);
   
   for (let i=0; i<result.length; i++) {
     let onlineStatus = await OnlineService.checkOnlineStatus(result[i]._id);

@@ -15,6 +15,7 @@ const createTable = {
     let headerRow = document.createElement('tr');
     headerRow.innerHTML = `
       <th>User Name</th>
+      <th>User ID</th>
       <th>Last Seen</th>
       <th>Naloxone?</th>`;
     table.appendChild(headerRow);
@@ -24,6 +25,7 @@ const createTable = {
       let userRow = document.createElement('tr')
       userRow.innerHTML = `
       <td>${user.username}</td>
+      <td>${user._id}</td>
       <td>${user.lastSeen == null ? "" : lastSeen.toLocaleDateString() + " " + lastSeen.toLocaleTimeString()}</td>
       <td>${user.naloxoneAvailability}</td>`
       table.appendChild(userRow)

@@ -440,11 +440,11 @@ async function getAllUserData(req, res) {
   }
   
   for (let i=0; i<result.length; i++) {
+    console.log(result[i])
     let onlineStatus = await OnlineService.checkOnlineStatus(result[i]._id);
     let lastSeen = await OnlineService.getLastSeen(result[i]._id);
     result[i].naloxoneAvailability = onlineStatus;
     result[i].lastSeen = lastSeen;
-    result[i].note = result[i].location.note;
   }
   
   console.log(result)

@@ -46,7 +46,8 @@ const createTable = {
       <th>User Id</th>
       <th>Alarm Start</th>
       <th>Alarm End</th>
-      <th>Alarm Sent?</th>`;
+      <th>Alarm Sent?</th>
+      <th>Alarm ID</th>`;
     table.appendChild(headerRow);
     
     data.forEach(alarm => {
@@ -59,7 +60,8 @@ const createTable = {
       <td>${alarm.userid}</td>
       <td>${alarm.alarmstart == null ? "" : start.toLocaleDateString() + " " + start.toLocaleTimeString()}</td>
       <td>${alarm.alarmend == null ? "" : end.toLocaleDateString() + " " + end.toLocaleTimeString()}</td>
-      <td>${alarm.alarmsent}</td>`
+      <td>${alarm.alarmsent}</td>
+      <td>${alarm.id}</td>`
       table.appendChild(alarmRow)
     });
     return table
